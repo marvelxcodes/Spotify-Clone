@@ -7,45 +7,53 @@ import {
     RssIcon,
     HeartIcon
 } from '@heroicons/react/outline'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-
+import useSpotify from '../Hooks/useSpotify'
 
 const Sidebar : NextPage = ({}) => {
-    const { data, status } = useSession()
-    console.log(data)
+    const { data } = useSession()
+    const [playlists, setPlaylists] = useState<object[]>([])
+    const Spotify = useSpotify()
+
+    useEffect(() => {
+        if(Spotify.getAccessToken()) {
+            Spotify.getUserPlaylists({limit: 10}).then((data) => {
+                setPlaylists(data.body.items)
+                console.log(data.body.items)
+            })
+        }
+    }, [data, Spotify])
+    console.log(playlists)
+    const IconProps = {
+        className: 'h-7 md:h-5 aspect-square'
+    }
     return(
-<div className='text-gray-500 scroll-none overflow-y-scroll font-medium p-5 h-screen w-44 text-sm border-r border-gray-900'>
-    <div className='space-y-4 cursor-pointer'>
-        <h1 className="text-white">{data?.user?.name}</h1>
+<div className='text-gray-500 scroll-none overflow-y-scroll md:p-5 font-medium h-screen justify-center w-20 md:w-64 text-sm border-r border-gray-900'>
+    <div className='space-y-4 cursor-pointer pt-24 md:pt-5 w-full flex flex-col justify-center'>
+        <h1 className='hidden md:flex w-full  font-bold'>{data?.user?.name}</h1>
+        <hr className='border-t-[0.1px] border-gray-800 m-3' />
         <Menu name='Home'>
-            <HomeIcon className='h-5 w-5'/>
+            <HomeIcon {...IconProps} />
         </Menu>
         <Menu name='Search'>
-            <SearchIcon className='h-5 w-5'/>
+            <SearchIcon {...IconProps} />
         </Menu>
         <Menu name='Your Library'>
-            <LibraryIcon className='h-5 w-5'/>
+            <LibraryIcon {...IconProps} />
         </Menu>
-        <hr className='border-t-[0.1px] border-gray-800' />
+        <hr className='border-t-[0.1px] border-gray-800 m-3' />
         <Menu name='Create Playlist'>
-            <PlusCircleIcon className='h-5 w-5'/>
+            <PlusCircleIcon {...IconProps} />
         </Menu>
         <Menu name='Liked Song'>
-            <HeartIcon className='h-5 w-5'/>
+            <HeartIcon {...IconProps} />
         </Menu>
         <Menu name='Your Episodes'>
-            <RssIcon className='h-5 w-5'/>
+            <RssIcon {...IconProps} />
         </Menu>
-        <hr className='border-t-[0.1px] border-gray-800' />
-        <p className='hover:text-white'>Playlist Name</p>
-        <p className='hover:text-white'>Playlist Name</p>
-        <p className='hover:text-white'>Playlist Name</p>
-        <p className='hover:text-white'>Playlist Name</p>
-        <p className='hover:text-white'>Playlist Name</p>
-        <p className='hover:text-white'>Playlist Name</p>
-        <p className='hover:text-white'>Playlist Name</p>
-        <p className='hover:text-white'>Playlist Name</p>
+        <hr className='border-t-[0.1px] border-gray-800 m-3' />
+        <Playlists playlists={playlists} />
     </div>
 </div>
 )}
@@ -59,8 +67,28 @@ type Menu = {
 
 const Menu = ({children, name}:Menu) => {
     return (
-<button className='flex transition-colors items-center space-x-2 hover:text-white '>
+<button className='flex transition-colors justify-center md:justify-start overflow-x-hidden items-center space-x-2 hover:text-white '>
     {children}
-    <p>{name}</p>
+    <p className='hidden md:flex'>{name}</p>
 </button>
+)}
+
+type PlaylistsProps = {
+    playlists: object[]
+}
+
+type PlaylistProps = {
+    playlist: {
+
+    }
+    index: number
+}
+
+const Playlists = ({playlists}:PlaylistsProps) => {
+  return (
+<div>
+    {playlists?.map((playlist:any, index) => (
+        <p className='' key={playlist.id}>{playlist.name}</p>
+    ))}
+</div>
 )}

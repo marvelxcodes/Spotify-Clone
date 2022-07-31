@@ -1,5 +1,5 @@
 import SpotifyWebApi from 'spotify-web-api-node'
-import { URLSearchParams } from 'url'
+
 const scopes = [
     "user-read-email",
     "playlist-read-private",
