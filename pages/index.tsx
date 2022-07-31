@@ -2,12 +2,12 @@ import type {NextPage} from 'next'
 import Sidebar from '../components/Sidebar'
 import Main from '../components/Main'
 
-const Home : NextPage = ({}) => {
+const Home : NextPage = () => {
     return(
-<div className='bg-black h-screen overflow-hidden'>
+<main className='bg-black h-screen w-screen flex overflow-hidden'>
     <Sidebar />
     <Main />
-</div>
+</main>
 )}
 
 export default Home

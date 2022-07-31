@@ -4,9 +4,8 @@ import '../utils/Tailwind.css'
 import Header from '../components/Header'
 import { SessionProvider } from 'next-auth/react'
 
-
 export default function MyApp({ Component, pageProps}: AppProps) {
-  return(
+  return (
 <SessionProvider>
   <Component {...pageProps} />
   <Header />

@@ -8,7 +8,7 @@ const Header : NextPage = ({}) => {
     <title>Spotify</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <meta name="description" content="Spotify Clone by MarvelXCodes" />
-    <link rel="icon" type="image/svg" href="/logo.svg" />
+    <link rel="icon" type="image/svg" href="https://res.cloudinary.com/marvelx/image/upload/v1659271461/Spotify_oqxjga.png" />
 </Head>
 </>
 )}
